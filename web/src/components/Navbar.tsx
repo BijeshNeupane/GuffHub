@@ -14,7 +14,7 @@ const Navbar = () => {
         <div className="col-span-1">
           <Link to="/">
             <img
-              className="h-20 w-[200px]"
+              className="h-16 w-[200px]"
               src="./logo.svg"
               alt="GuffHub logo"
             />
@@ -26,7 +26,7 @@ const Navbar = () => {
           <Link to="/chat">
             <MessageCircle
               size={40}
-              className={`cursor-pointer transition-all duration-200 active:scale-95
+              className={`cursor-pointer transition-all duration-200 hover:-translate-y-1 hover:text-blue-600 active:scale-95
                 ${isActive("/chat") ? "text-blue-600" : "text-gray-700"}
               `}
             />
@@ -35,7 +35,7 @@ const Navbar = () => {
           <Link to="/">
             <House
               size={40}
-              className={`cursor-pointer transition-all duration-200 active:scale-95
+              className={`cursor-pointer transition-all duration-200 hover:-translate-y-1 hover:text-blue-600 active:scale-95
                 ${isActive("/") ? "text-blue-600" : "text-gray-700"}
               `}
             />
@@ -44,7 +44,7 @@ const Navbar = () => {
           <Link to="/search">
             <Search
               size={40}
-              className={`cursor-pointer transition-all duration-200 active:scale-95
+              className={`cursor-pointer transition-all duration-200 hover:-translate-y-1 hover:text-blue-600 active:scale-95
                 ${isActive("/search") ? "text-blue-600" : "text-gray-700"}
               `}
             />
@@ -53,7 +53,13 @@ const Navbar = () => {
 
         {/* User */}
         <div className="col-span-1 flex justify-end">
-          <UserButton />
+          <UserButton
+            appearance={{
+              elements: {
+                avatarBox: "w-10 h-10",
+              },
+            }}
+          />
         </div>
       </div>
     </div>
