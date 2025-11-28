@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authreducer from "./features/auth/authSlice";
+import themereducer from "./features/theme/themeSlice";
 
 export const store = configureStore({
   reducer: {
     auth: authreducer,
+    theme: themereducer,
   },
 });
 

@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
-import { useAppDispatch } from "./redux/hooks";
+import { useAppDispatch, useAppSelector } from "./redux/hooks";
 import { SignedIn, SignedOut, SignIn, useUser } from "@clerk/clerk-react";
 import { useEffect } from "react";
 import { setUser } from "./redux/features/auth/authSlice";
@@ -10,6 +10,7 @@ import Search from "./pages/Search";
 
 const App = () => {
   const dispatch = useAppDispatch();
+  const { colors } = useAppSelector((state) => state.theme);
   const { user } = useUser();
 
   useEffect(() => {
@@ -25,7 +26,7 @@ const App = () => {
   }, [user]);
 
   return (
-    <>
+    <div style={{ backgroundColor: colors.background, height: "100%" }}>
       <SignedOut>
         <div className="bg-[#3f3f3f] h-screen flex items-center justify-center">
           <SignIn />
@@ -40,7 +41,7 @@ const App = () => {
           <Route path="/search" element={<Search />} />
         </Routes>
       </SignedIn>
-    </>
+    </div>
   );
 };
 

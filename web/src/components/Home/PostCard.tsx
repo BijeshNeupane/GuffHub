@@ -1,3 +1,4 @@
+import { useAppSelector } from "../../redux/hooks";
 import { Ellipsis, Heart, MessageSquare } from "lucide-react";
 
 type postType = {
@@ -21,8 +22,12 @@ const PostCard = ({
   commentsCount,
   liked,
 }: postType) => {
+  const { colors } = useAppSelector((state) => state.theme);
   return (
-    <div className="card w-full px-6 py-4 bg-white rounded-2xl">
+    <div
+      style={{ backgroundColor: colors.primary, color: colors.text }}
+      className="card w-full px-6 py-4 rounded-2xl"
+    >
       <div className="top flex items-center justify-between px-5">
         <div className="left flex items-center gap-2">
           <div className="profile rounded-full overflow-hidden">
@@ -58,7 +63,7 @@ const PostCard = ({
           <Heart
             size={34}
             fill={liked ? "red" : "none"}
-            stroke={liked ? "red" : "black"}
+            stroke={liked ? "red" : colors.text}
             className="cursor-pointer"
           />
           <span className="font-semibold text-xl">{likesCount}</span>
