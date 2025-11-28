@@ -7,6 +7,7 @@ import { setUser } from "./redux/features/auth/authSlice";
 import Navbar from "./components/Navbar";
 import Chat from "./pages/Chat";
 import Search from "./pages/Search";
+import AddPost from "./components/AddPost";
 
 const App = () => {
   const dispatch = useAppDispatch();
@@ -26,7 +27,7 @@ const App = () => {
   }, [user]);
 
   return (
-    <div style={{ backgroundColor: colors.background, height: "100%" }}>
+    <div style={{ backgroundColor: colors.background, minHeight: "100vh" }}>
       <SignedOut>
         <div className="bg-[#3f3f3f] h-screen flex items-center justify-center">
           <SignIn />
@@ -39,6 +40,7 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/chat" element={<Chat />} />
           <Route path="/search" element={<Search />} />
+          <Route path="/add-post" element={<AddPost />} />
         </Routes>
       </SignedIn>
     </div>
