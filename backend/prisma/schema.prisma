@@ -11,9 +11,151 @@ datasource db {
         
 
 
+// -------------------------------
+// USER
+// -------------------------------
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  name      String?
+  id              String   @id @default(cuid())
+  clerkId         String   @unique
+  username        String   @unique
+  fullName        String?
+  profileImageUrl String?
+  createdAt       DateTime @default(now())
+
+  posts           Post[]
+  comments        Comment[]
+  commentLikes    CommentLike[]
+  postLikes       PostLike[]
+  postSaves       PostSave[]
+  conversationsA  Conversation[] @relation("UserA")
+  conversationsB  Conversation[] @relation("UserB")
+  messages        Message[]
+}
+
+
+// -------------------------------
+// POST
+// -------------------------------
+model Post {
+  id          String      @id @default(cuid())
+  authorId    String
+  content     String?
+  createdAt   DateTime    @default(now())
+
+  // Repost system — if not null, this post is a repost
+  repostOfId  String?
+  repostOf    Post?       @relation("Reposts", fields: [repostOfId], references: [id])
+  reposts     Post[]      @relation("Reposts")
+
+  author      User        @relation(fields: [authorId], references: [id])
+  media       PostMedia[]
+  likes       PostLike[]
+  saves       PostSave[]
+  comments    Comment[]
+}
+
+model PostMedia {
+  id        String   @id @default(cuid())
+  postId    String
+  imageUrl  String
   createdAt DateTime @default(now())
+
+  post      Post     @relation(fields: [postId], references: [id])
+}
+
+
+// -------------------------------
+// POST LIKE
+// -------------------------------
+model PostLike {
+  id        String   @id @default(cuid())
+  postId    String
+  userId    String
+  createdAt DateTime @default(now())
+
+  post      Post     @relation(fields: [postId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@unique([postId, userId])
+}
+
+
+// -------------------------------
+// POST SAVE (Bookmark)
+// -------------------------------
+model PostSave {
+  id        String   @id @default(cuid())
+  postId    String
+  userId    String
+  createdAt DateTime @default(now())
+
+  post      Post     @relation(fields: [postId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@unique([postId, userId])
+}
+
+
+// -------------------------------
+// COMMENT + REPLIES
+// -------------------------------
+model Comment {
+  id        String       @id @default(cuid())
+  postId    String
+  userId    String
+  text      String
+  parentId  String?
+  createdAt DateTime      @default(now())
+
+  post      Post          @relation(fields: [postId], references: [id])
+  user      User          @relation(fields: [userId], references: [id])
+  parent    Comment?      @relation("Replies", fields: [parentId], references: [id])
+  replies   Comment[]     @relation("Replies")
+  likes     CommentLike[]
+}
+
+model CommentLike {
+  id        String   @id @default(cuid())
+  commentId String
+  userId    String
+  createdAt DateTime @default(now())
+
+  comment   Comment  @relation(fields: [commentId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@unique([commentId, userId])
+}
+
+
+// -------------------------------
+// CONVERSATION (1-on-1)
+// -------------------------------
+model Conversation {
+  id        String   @id @default(cuid())
+  userAId   String
+  userBId   String
+  createdAt DateTime @default(now())
+
+  userA     User     @relation("UserA", fields: [userAId], references: [id])
+  userB     User     @relation("UserB", fields: [userBId], references: [id])
+  messages  Message[]
+
+  @@unique([userAId, userBId])
+}
+
+
+// -------------------------------
+// MESSAGE (Inside conversation)
+// -------------------------------
+model Message {
+  id             String     @id @default(cuid())
+  conversationId String
+  senderId       String
+  text           String?
+  mediaUrl       String?
+  createdAt      DateTime   @default(now())
+  seenAt         DateTime?
+
+  conversation   Conversation @relation(fields: [conversationId], references: [id])
+  sender         User         @relation(fields: [senderId], references: [id])
 }
