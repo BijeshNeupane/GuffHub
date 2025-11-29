@@ -2,7 +2,7 @@ import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import Home from "./pages/Home";
 import Chat from "./pages/Chat";
 import Search from "./pages/Search";
-import AddPost from "./components/AddPost";
+import AddPost from "./pages/AddPost";
 import MainLayout from "./components/layouts/MainLayout";
 import AuthLayout from "./components/layouts/AuthLayout";
 import { Toaster } from "react-hot-toast";
@@ -11,7 +11,7 @@ import { SignedIn, SignedOut, SignIn, useUser } from "@clerk/clerk-react";
 import axiosInstance from "./config/axiosInstance";
 import { useEffect, useState } from "react";
 import { CreateAccount } from "./pages/CreateAccount";
-import { setHasAccount } from "./redux/features/auth/authSlice";
+import { setHasAccount, setUser } from "./redux/features/auth/authSlice";
 
 const App = () => {
   const navigate = useNavigate();
@@ -27,6 +27,16 @@ const App = () => {
       const { data } = await axiosInstance.post("/auth/check-user", {
         clerkId,
       });
+      dispatch(
+        setUser({
+          email: user?.emailAddresses?.[0]?.emailAddress || "",
+          fullName: user?.fullName || "",
+          id: data.user.id || "",
+          clerkId: user?.id || "",
+          username: data.user.username || "",
+          profileImage: data.user.profileImageUrl || "",
+        })
+      );
       dispatch(setHasAccount(data.exists));
       return data.exists;
     } catch (err) {
@@ -91,6 +101,9 @@ const App = () => {
             <Route element={<AuthLayout />}>
               <Route path="/create-account" element={<CreateAccount />} />
             </Route>
+
+            {/* route for 404 */}
+            <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         )}
       </SignedIn>

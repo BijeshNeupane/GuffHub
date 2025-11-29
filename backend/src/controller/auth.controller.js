@@ -4,15 +4,13 @@ import ImageKit from "imagekit";
 
 export async function checkUserExistence(req, res) {
   const { clerkId } = req.body;
-  console.log(clerkId);
-
   try {
     const user = await prisma.user.findUnique({
       where: { clerkId },
     });
 
     if (user) {
-      return res.status(200).json({ exists: true });
+      return res.status(200).json({ exists: true, user });
     }
     return res.status(200).json({ exists: false });
   } catch (error) {

@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import axiosInstance from "../config/axiosInstance";
 import toast from "react-hot-toast";
 import { setHasAccount, setUser } from "../redux/features/auth/authSlice";
-import { Router, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export const CreateAccount: React.FC = () => {
   const { colors } = useAppSelector((state) => state.theme);
@@ -60,7 +60,7 @@ export const CreateAccount: React.FC = () => {
           id: data.id || "",
           clerkId: user.id || "",
           username: data.username || "",
-          profileImage: data.profileImage || "",
+          profileImage: data.profileImageUrl || "",
         })
       );
       toast.success("Account created successfully!");

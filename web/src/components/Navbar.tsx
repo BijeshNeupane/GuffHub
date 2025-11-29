@@ -7,6 +7,7 @@ import { Link, useLocation } from "react-router-dom";
 const Navbar = () => {
   const { pathname } = useLocation();
   const { colors, mode } = useAppSelector((state) => state.theme);
+  const { profileImage } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
 
   const isActive = (route: string) => pathname === route;
@@ -67,6 +68,12 @@ const Navbar = () => {
                 avatarBox: "w-10 h-10",
               },
             }}
+          />
+
+          <img
+            className="w-10 h-10 rounded-full"
+            src={profileImage || ""}
+            alt=""
           />
 
           <div

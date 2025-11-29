@@ -42,11 +42,6 @@ model Post {
   content     String?
   createdAt   DateTime    @default(now())
 
-  // Repost system — if not null, this post is a repost
-  repostOfId  String?
-  repostOf    Post?       @relation("Reposts", fields: [repostOfId], references: [id])
-  reposts     Post[]      @relation("Reposts")
-
   author      User        @relation(fields: [authorId], references: [id])
   media       PostMedia[]
   likes       PostLike[]

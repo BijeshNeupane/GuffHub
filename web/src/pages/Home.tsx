@@ -4,7 +4,7 @@ import Right from "../components/Home/Right";
 
 const Home = () => {
   return (
-    <div className="container grid grid-cols-5 items-center pt-10 pb-10">
+    <div className="container grid grid-cols-5 pt-10 pb-10">
       <div className="left col-span-1">
         <Left />
       </div>
