@@ -17,7 +17,6 @@ export const CreateAccount: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const { hasAccount } = useAppSelector((state) => state.auth);
-  console.log("acc", hasAccount);
 
   if (hasAccount) {
     setTimeout(() => navigate("/", { replace: true }), 0);

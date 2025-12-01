@@ -6,7 +6,7 @@ type postType = {
   name: string;
   time: string;
   description: string;
-  image: string;
+  image: string[];
   likesCount: number;
   commentsCount: number;
   liked: boolean;
@@ -53,9 +53,28 @@ const PostCard = ({
       <div className="content mt-4">
         <p className="px-5 leading-5">{description}</p>
         <div className="image w-full">
-          <div className="relative w-full overflow-hidden rounded-xl bg-black mt-2 cursor-pointer">
-            <img src={image} alt="" className="w-full h-auto object-cover" />
-          </div>
+          {image.length > 1 ? (
+            <div className="relative w-full grid grid-cols-2 gap-2 overflow-hidden bg-black mt-2">
+              <img
+                src={image[0]}
+                alt=""
+                className="col-span-1 h-full  rounded-xl object-cover cursor-pointer"
+              />
+              <img
+                src={image[1]}
+                alt=""
+                className="col-span-1 h-full  rounded-xl object-cover cursor-pointer"
+              />
+            </div>
+          ) : (
+            <div className="relative w-full overflow-hidden rounded-xl bg-black mt-2">
+              <img
+                src={image[0]}
+                alt=""
+                className="w-full h-auto object-cover cursor-pointer"
+              />
+            </div>
+          )}
         </div>
       </div>
       <div className="likes flex gap-40 items-center mt-4 px-5">

@@ -2,6 +2,7 @@ import express from "express";
 import { config } from "dotenv";
 import { connectDatabase, prisma } from "./config/prismaClient.js";
 import authRoutes from "./routes/auth.route.js";
+import postRoutes from "./routes/post.route.js";
 import cors from "cors";
 
 const app = express();
@@ -22,6 +23,7 @@ app.use(
 );
 
 app.use("/api/auth", authRoutes);
+app.use("/api/post", postRoutes);
 
 app.get("/", (req, res) => {
   res.status(200).json({ status: "Backend working fine" });

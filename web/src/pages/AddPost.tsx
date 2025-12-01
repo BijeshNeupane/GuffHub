@@ -1,5 +1,8 @@
+import toast from "react-hot-toast";
 import { useAppSelector } from "../redux/hooks";
 import React, { useState, type ChangeEvent } from "react";
+import axiosInstance from "../config/axiosInstance";
+import { useNavigate } from "react-router-dom";
 
 const MAX_IMAGES = 2;
 
@@ -8,6 +11,11 @@ const AddPost: React.FC = () => {
   const [description, setDescription] = useState<string>("");
   const [images, setImages] = useState<File[]>([]);
   const [previews, setPreviews] = useState<string[]>([]);
+  const [creating, setCreating] = useState<boolean>(false);
+
+  const { id } = useAppSelector((state) => state.auth);
+
+  const navigate = useNavigate();
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
@@ -42,10 +50,55 @@ const AddPost: React.FC = () => {
     setPreviews(updatedPreviews);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log({ description, images });
-    // Add your submit logic here
+    setCreating(true);
+
+    if (!description.trim()) {
+      toast.error("Please provide a description");
+      setCreating(false);
+      return;
+    }
+
+    if (images.length === 0) {
+      toast.error("Please select at least one image");
+      setCreating(false);
+      return;
+    }
+
+    try {
+      const formData = new FormData();
+      formData.append("description", description);
+      formData.append("userId", id!);
+
+      // USE WHAT YOUR BACKEND EXPECTS
+      images.forEach((image, idx) => {
+        formData.append(`image_${idx + 1}`, image);
+      });
+
+      // Debug properly
+      for (let pair of formData.entries()) {
+        console.log(pair[0], pair[1]);
+      }
+
+      const { data } = await axiosInstance.post("/post/create", formData);
+
+      toast.success("Post created!");
+      console.log("SERVER RESPONSE:", data);
+
+      // optional: clear form
+      setDescription("");
+      setImages([]);
+      setPreviews([]);
+    } catch (error) {
+      console.error("Error creating post:", error);
+      toast.error("Failed to create post. Please try again.");
+    } finally {
+      setCreating(false);
+      setTimeout(() => {
+        navigate("/");
+      }, 0);
+    }
   };
 
   return (
@@ -64,6 +117,9 @@ const AddPost: React.FC = () => {
         <div>
           <label className="block text-sm font-medium mb-1">Description</label>
           <textarea
+            style={{
+              color: colors.text == "#000000" ? "#ffffff" : "#000000",
+            }}
             placeholder="Write a description..."
             value={description}
             onChange={(e) => setDescription(e.target.value)}
@@ -118,7 +174,11 @@ const AddPost: React.FC = () => {
         {/* Submit Button */}
         <button
           type="submit"
-          className="w-full bg-blue-600 text-white py-2.5 rounded hover:bg-blue-700 transition-colors font-medium"
+          disabled={creating}
+          className="w-full bg-blue-600 text-white py-2.5 rounded hover:-translate-y-1 transition-all duration-300 font-medium active:translate-y-1"
+          style={{
+            backgroundColor: creating ? "gray" : "#1d4ed8",
+          }}
         >
           Create Post
         </button>

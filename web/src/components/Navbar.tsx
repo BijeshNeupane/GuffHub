@@ -1,6 +1,6 @@
 import { toggleTheme } from "../redux/features/theme/themeSlice";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { UserButton } from "@clerk/clerk-react";
+// import { UserButton } from "@clerk/clerk-react";
 import { House, MessageCircle, Moon, Search, Sun } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
@@ -62,19 +62,23 @@ const Navbar = () => {
 
         {/* User */}
         <div className="col-span-1 flex justify-end gap-4">
-          <UserButton
+          {/* <UserButton
             appearance={{
               elements: {
                 avatarBox: "w-10 h-10",
               },
             }}
-          />
+          /> */}
 
-          <img
-            className="w-10 h-10 rounded-full"
-            src={profileImage || ""}
-            alt=""
-          />
+          <div className="img-container w-10 h-10 rounded-full cursor-pointer overflow-hidden">
+            <Link to="/profile">
+              <img
+                className="hover:scale-105 transition-all duration-300"
+                src={profileImage || ""}
+                alt=""
+              />
+            </Link>
+          </div>
 
           <div
             onClick={() => {

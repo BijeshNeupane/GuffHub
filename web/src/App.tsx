@@ -12,6 +12,8 @@ import axiosInstance from "./config/axiosInstance";
 import { useEffect, useState } from "react";
 import { CreateAccount } from "./pages/CreateAccount";
 import { setHasAccount, setUser } from "./redux/features/auth/authSlice";
+import Profile from "./pages/Profile";
+import RouteProgress from "./components/RouteProgress";
 
 const App = () => {
   const navigate = useNavigate();
@@ -84,27 +86,35 @@ const App = () => {
             Loading...
           </div>
         ) : (
-          <Routes>
-            {/* Layout with navbar */}
-            <Route
-              element={
-                hasAccount ? <MainLayout /> : <Navigate to="/create-account" />
-              }
-            >
-              <Route path="/" element={<Home />} />
-              <Route path="/chat" element={<Chat />} />
-              <Route path="/search" element={<Search />} />
-              <Route path="/add-post" element={<AddPost />} />
-            </Route>
+          <>
+            <RouteProgress />
+            <Routes>
+              {/* Layout with navbar */}
+              <Route
+                element={
+                  hasAccount ? (
+                    <MainLayout />
+                  ) : (
+                    <Navigate to="/create-account" />
+                  )
+                }
+              >
+                <Route path="/" element={<Home />} />
+                <Route path="/chat" element={<Chat />} />
+                <Route path="/search" element={<Search />} />
+                <Route path="/add-post" element={<AddPost />} />
+                <Route path="/profile" element={<Profile />} />
+              </Route>
 
-            {/* Layout without navbar */}
-            <Route element={<AuthLayout />}>
-              <Route path="/create-account" element={<CreateAccount />} />
-            </Route>
+              {/* Layout without navbar */}
+              <Route element={<AuthLayout />}>
+                <Route path="/create-account" element={<CreateAccount />} />
+              </Route>
 
-            {/* route for 404 */}
-            <Route path="*" element={<Navigate to="/" />} />
-          </Routes>
+              {/* route for 404 */}
+              <Route path="*" element={<Navigate to="/" />} />
+            </Routes>
+          </>
         )}
       </SignedIn>
     </div>
