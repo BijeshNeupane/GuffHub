@@ -70,3 +70,60 @@ export async function getPosts(req, res) {
     res.status(500).json({ error: "Failed to retrieve posts" });
   }
 }
+
+export async function likePost(req, res) {
+  const { postId, userId } = req.body;
+  try {
+    const hasLiked = await prisma.postLike.findFirst({
+      where: {
+        postId,
+        userId,
+      },
+    });
+
+    if (hasLiked) {
+      const like = await prisma.postLike.delete({
+        where: {
+          id: hasLiked.id,
+        },
+      });
+
+      const post = await prisma.post.findUnique({
+        where: {
+          id: postId,
+        },
+        include: {
+          likes: {
+            select: {
+              userId: true,
+            },
+          },
+        },
+      });
+      return res.status(200).json(post);
+    }
+
+    const like = await prisma.postLike.create({
+      data: {
+        postId,
+        userId,
+      },
+    });
+    const post = await prisma.post.findUnique({
+      where: {
+        id: postId,
+      },
+      include: {
+        likes: {
+          select: {
+            userId: true,
+          },
+        },
+      },
+    });
+    return res.status(200).json(post);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to like post" });
+  }
+}

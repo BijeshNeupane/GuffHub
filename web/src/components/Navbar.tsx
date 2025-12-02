@@ -17,7 +17,10 @@ const Navbar = () => {
   };
 
   return (
-    <div style={{ backgroundColor: colors.primary }}>
+    <div
+      style={{ backgroundColor: colors.primary }}
+      className="sticky top-0 z-10"
+    >
       <div className="container grid grid-cols-5 items-center">
         {/* Logo */}
         <div className="col-span-1">
@@ -67,13 +70,13 @@ const Navbar = () => {
               elements: {
                 avatarBox: "w-10 h-10",
               },
-            }}
-          /> */}
+            }} 
+          />*/}
 
           <div className="img-container w-10 h-10 rounded-full cursor-pointer overflow-hidden">
             <Link to="/profile">
               <img
-                className="hover:scale-105 transition-all duration-300"
+                className="hover:scale-105 transition-all duration-300 object-cover w-full h-full"
                 src={profileImage || ""}
                 alt=""
               />

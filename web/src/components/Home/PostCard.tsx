@@ -1,5 +1,9 @@
+import { Link } from "react-router-dom";
 import { useAppSelector } from "../../redux/hooks";
 import { Ellipsis, Heart, MessageSquare } from "lucide-react";
+import axiosInstance from "../../config/axiosInstance";
+import toast from "react-hot-toast";
+import { useState } from "react";
 
 type postType = {
   profilePic: string;
@@ -10,6 +14,9 @@ type postType = {
   likesCount: number;
   commentsCount: number;
   liked: boolean;
+  userId: string;
+  id: string;
+  toggleLike: any;
 };
 
 const PostCard = ({
@@ -21,8 +28,30 @@ const PostCard = ({
   likesCount,
   commentsCount,
   liked,
+  userId,
+  id,
+  toggleLike,
 }: postType) => {
   const { colors } = useAppSelector((state) => state.theme);
+  const { id: selfId } = useAppSelector((state) => state.auth);
+  const [hasLiked, setHasLiked] = useState(liked);
+  const [likeCountState, setLikeCountState] = useState(likesCount);
+
+  const handleLike = async () => {
+    setHasLiked(!hasLiked);
+    setLikeCountState(hasLiked ? likeCountState - 1 : likeCountState + 1);
+    try {
+      const { data } = await axiosInstance.post(`/post/like`, {
+        postId: id,
+        userId: selfId,
+      });
+      toggleLike(id, selfId);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+      toast.error("Failed to like post");
+    }
+  };
   return (
     <div
       style={{ backgroundColor: colors.primary, color: colors.text }}
@@ -31,14 +60,18 @@ const PostCard = ({
       <div className="top flex items-center justify-between px-5">
         <div className="left flex items-center gap-2">
           <div className="profile rounded-full overflow-hidden">
-            <img
-              className="w-12 h-12 object-cover cursor-pointer hover:scale-110 transition-all duration-300"
-              src={profilePic}
-              alt="Profile"
-            />
+            <Link to={`/user/${userId}`}>
+              <img
+                className="w-12 h-12 object-cover cursor-pointer hover:scale-110 transition-all duration-300"
+                src={profilePic}
+                alt="Profile"
+              />
+            </Link>
           </div>
           <div className="name">
-            <h1 className="font-bold text-[22px]">{name}</h1>
+            <Link className="hover:underline" to={`/user/${userId}`}>
+              <h1 className="font-bold text-[22px]">{name}</h1>
+            </Link>
             <p className="text-[12px]">{time}</p>
           </div>
         </div>
@@ -84,11 +117,14 @@ const PostCard = ({
         <div className="likes flex items-center gap-2">
           <Heart
             size={34}
-            fill={liked ? "red" : "none"}
-            stroke={liked ? "red" : colors.text}
+            fill={hasLiked ? "red" : "none"}
+            stroke={hasLiked ? "red" : colors.text}
             className="cursor-pointer"
+            onClick={() => {
+              handleLike();
+            }}
           />
-          <span className="font-semibold text-xl">{likesCount}</span>
+          <span className="font-semibold text-xl">{likeCountState}</span>
         </div>
         <div className="comments flex items-center gap-2">
           <MessageSquare size={34} className="cursor-pointer" />

@@ -30,7 +30,25 @@ model User {
   conversationsA  Conversation[] @relation("UserA")
   conversationsB  Conversation[] @relation("UserB")
   messages        Message[]
+
+   // FOLLOW SYSTEM
+  followers       Follow[] @relation("UserFollowedBy")
+  following       Follow[] @relation("UserFollows")
 }
+
+
+model Follow {
+  id          String   @id @default(cuid())
+  followerId  String
+  followingId String
+  createdAt   DateTime @default(now())
+
+  follower    User     @relation("UserFollows", fields: [followerId], references: [id])
+  following   User     @relation("UserFollowedBy", fields: [followingId], references: [id])
+
+  @@unique([followerId, followingId])
+}
+
 
 
 // -------------------------------
@@ -154,3 +172,7 @@ model Message {
   conversation   Conversation @relation(fields: [conversationId], references: [id])
   sender         User         @relation(fields: [senderId], references: [id])
 }
+
+
+
+
