@@ -18,7 +18,7 @@ const Center = () => {
   console.log(posts);
   return (
     <div className="px-10 flex flex-col gap-10">
-      <PostCard
+      {/* <PostCard
         profilePic={
           "https://scontent.fktm8-1.fna.fbcdn.net/v/t39.30808-6/508566431_1434372257744978_8512150965780079989_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=101&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=kpnJJJWJuW8Q7kNvwEwV9Qt&_nc_oc=Adlo964c97qgqbxmvff3CWnXOMh5LpABNaP78_yspvKRkjze4kz0cuoTszgiNUfN3BI2ZNhiJxOKV-VJzJq7NzY_&_nc_zt=23&_nc_ht=scontent.fktm8-1.fna&_nc_gid=5bDvkRu9XKluBURQimr4Yw&oh=00_Afj822GslcS6Mdv2js6TGS7EpUBkemoMePe4pYrNIXtFcg&oe=692E30CB"
         }
@@ -47,7 +47,7 @@ const Center = () => {
         likesCount={324}
         commentsCount={20}
         liked={true}
-      />
+      /> */}
 
       {posts.map((post: any) => {
         return (

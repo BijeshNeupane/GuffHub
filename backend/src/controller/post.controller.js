@@ -64,8 +64,6 @@ export async function getPosts(req, res) {
       },
     });
 
-    console.log(posts);
-
     res.status(200).json({ "posts": posts });
   } catch (error) {
     console.error(error);

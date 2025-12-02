@@ -19,6 +19,7 @@ export const authSlice = createSlice({
       state.clerkId = action.payload.clerkId;
       state.username = action.payload.username;
       state.profileImage = action.payload.profileImage;
+      localStorage.setItem("userId", JSON.stringify(action.payload.id));
     },
     setHasAccount: (state, action) => {
       state.hasAccount = action.payload;

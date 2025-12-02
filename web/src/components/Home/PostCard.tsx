@@ -54,7 +54,10 @@ const PostCard = ({
         <p className="px-5 leading-5">{description}</p>
         <div className="image w-full">
           {image.length > 1 ? (
-            <div className="relative w-full grid grid-cols-2 gap-2 overflow-hidden bg-black mt-2">
+            <div
+              style={{ backgroundColor: colors.primary }}
+              className="relative w-full grid grid-cols-2 gap-2 overflow-hidden mt-2"
+            >
               <img
                 src={image[0]}
                 alt=""
