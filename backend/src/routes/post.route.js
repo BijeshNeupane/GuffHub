@@ -2,6 +2,7 @@ import express from "express";
 import {
   createPost,
   getPosts,
+  getPostsById,
   likePost,
 } from "../controller/post.controller.js";
 import upload from "../lib/multer.js";
@@ -12,6 +13,7 @@ const router = express.Router();
 router.use(verifyUser);
 
 router.get("/", getPosts);
+router.get("/:id", getPostsById);
 router.post("/create", upload.any(), createPost);
 router.post("/like", likePost);
 

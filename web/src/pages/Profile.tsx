@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import axiosInstance from "../config/axiosInstance";
 import toast from "react-hot-toast";
 import { Loader } from "lucide-react";
+import AllPosts from "../components/AllPosts";
 
 const Profile = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -37,7 +38,10 @@ const Profile = () => {
   }
 
   return (
-    <div style={{ backgroundColor: colors.background, color: colors.text }}>
+    <div
+      className="container"
+      style={{ backgroundColor: colors.background, color: colors.text }}
+    >
       <div className="flex flex-col items-center">
         <div className="info flex items-center gap-4">
           <div className="image h-40 w-40 rounded-full overflow-hidden mt-5 cursor-pointer">
@@ -86,6 +90,8 @@ const Profile = () => {
           </div>
         </div>
       </div>
+
+      <AllPosts userId={id} />
     </div>
   );
 };

@@ -5,12 +5,13 @@ import axiosInstance from "../config/axiosInstance";
 import { Loader } from "lucide-react";
 import toast from "react-hot-toast";
 import hasFollowed from "../helper/hasFollowed";
+import AllPosts from "../components/AllPosts";
 
 export const UserPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [profile, setProfile] = useState({} as any);
 
-  const { id } = useParams();
+  const { id }: any = useParams();
   const { id: selfId } = useAppSelector((state) => state.auth);
   const { colors } = useAppSelector((state) => state.theme);
   const navigate = useNavigate();
@@ -76,9 +77,12 @@ export const UserPage = () => {
     );
   }
 
-  console.log(profile);
+  // console.log(profile);
   return (
-    <div style={{ backgroundColor: colors.background, color: colors.text }}>
+    <div
+      className="container"
+      style={{ backgroundColor: colors.background, color: colors.text }}
+    >
       <div className="flex flex-col items-center">
         <div className="info flex items-center gap-4">
           <div className="image h-40 w-40 rounded-full overflow-hidden mt-5 cursor-pointer">
@@ -132,6 +136,8 @@ export const UserPage = () => {
           </div>
         </div>
       </div>
+
+      <AllPosts userId={id} />
     </div>
   );
 };

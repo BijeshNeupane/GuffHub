@@ -36,10 +36,22 @@ export const registerUser = [
         return res.status(400).json({ error: "Profile image is required" });
       }
 
+      // --- PROCESS IMAGE HERE ---
+      const processedImage = await sharp(req.file.buffer)
+        .rotate() // fixes iPhone orientation
+        .resize({
+          width: 1080,
+          height: 1080,
+          fit: "inside", // keeps aspect ratio
+        })
+        .jpeg({ quality: 80 }) // compress to optimized JPG
+        .toBuffer();
+
       const image = await imagekit.upload({
-        file: req.file.buffer,
+        file: processedImage.toString("base64"),
         fileName: `${clerkId}_${Date.now()}.jpg`,
         folder: "/profile-images",
+        fileType: "image",
       });
 
       const newUser = await prisma.user.create({

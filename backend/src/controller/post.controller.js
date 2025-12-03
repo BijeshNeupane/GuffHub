@@ -1,6 +1,7 @@
 import { prisma } from "../config/prismaClient.js";
 import imagekit from "../lib/imagekit.js";
 import { v4 as uuidv4 } from "uuid";
+import sharp from "sharp";
 
 export async function createPost(req, res) {
   try {
@@ -12,16 +13,28 @@ export async function createPost(req, res) {
 
     // Upload all files to ImageKit
     const uploads = await Promise.all(
-      req.files.map((file) =>
-        imagekit.upload({
-          file: file.buffer,
+      req.files.map(async (file) => {
+        // Resize & compress BEFORE uploading
+        const processedImage = await sharp(file.buffer)
+          .rotate() // fix orientation from EXIF
+          .resize({
+            width: 1080,
+            height: 1080,
+            fit: "inside", // maintain aspect ratio
+          })
+          .jpeg({ quality: 80 }) // compress
+          .toBuffer();
+
+        // Upload compressed version
+        return imagekit.upload({
+          file: processedImage.toString("base64"),
           fileName: `${uuidv4()}_${userId}_${file.originalname}`,
           folder: "/posts",
-        })
-      )
+          fileType: "image",
+        });
+      })
     );
 
-    // Create new post (replace authorId with your actual auth logic)
     const post = await prisma.post.create({
       data: {
         content: description,
@@ -125,5 +138,38 @@ export async function likePost(req, res) {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Failed to like post" });
+  }
+}
+
+export async function getPostsById(req, res) {
+  const { id } = req.params;
+  try {
+    const posts = await prisma.post.findMany({
+      where: {
+        authorId: id,
+      },
+      include: {
+        media: true,
+        author: {
+          select: {
+            username: true,
+            profileImageUrl: true,
+          },
+        },
+        likes: {
+          select: {
+            userId: true,
+          },
+        },
+        _count: {
+          select: { likes: true, comments: true, saves: true },
+        },
+      },
+    });
+
+    res.status(200).json({ "posts": posts });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to retrieve posts" });
   }
 }
