@@ -71,22 +71,16 @@ const AddPost: React.FC = () => {
       formData.append("description", description);
       formData.append("userId", id!);
 
-      // USE WHAT YOUR BACKEND EXPECTS
       images.forEach((image, idx) => {
         formData.append(`image_${idx + 1}`, image);
       });
 
-      // Debug properly
-      for (let pair of formData.entries()) {
-        console.log(pair[0], pair[1]);
-      }
-
       const { data } = await axiosInstance.post("/post/create", formData);
 
-      toast.success("Post created!");
-      console.log("SERVER RESPONSE:", data);
+      if (data.error) throw new Error(data.error);
 
-      // optional: clear form
+      toast.success("Post created!");
+
       setDescription("");
       setImages([]);
       setPreviews([]);

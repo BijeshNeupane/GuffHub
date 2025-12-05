@@ -19,7 +19,7 @@ const Navbar = () => {
   return (
     <div
       style={{ backgroundColor: colors.primary }}
-      className="sticky top-0 z-10"
+      className="sticky top-0 z-20"
     >
       <div className="container grid grid-cols-5 items-center">
         {/* Logo */}

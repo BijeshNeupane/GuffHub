@@ -79,8 +79,6 @@ const Center = () => {
     );
   }
 
-  console.log(posts);
-
   return (
     <div className="px-10 flex flex-col gap-10">
       {posts.map((post: any) => {

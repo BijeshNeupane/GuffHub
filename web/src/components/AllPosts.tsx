@@ -8,7 +8,7 @@ import {
   MessageSquare,
   ChevronLeft,
   ChevronRight,
-} from "lucide-react"; // Import icons
+} from "lucide-react";
 import hasLiked from "../helper/hasLiked";
 import { useAppSelector } from "../redux/hooks";
 
@@ -25,7 +25,7 @@ interface Post {
   content: string;
   createdAt: string;
   media: Media[];
-  likes: any[]; // Array of like objects (used by hasLiked)
+  likes: any[];
   _count: {
     comments: number;
     likes: number;
@@ -141,7 +141,7 @@ const PostModal = ({ post, onClose }: { post: Post; onClose: () => void }) => {
         </button>
 
         <div
-          className="w-1/2 max-h-[90vh] flex items-center justify-center bg-black relative select-none overflow-hidden" // ADDED overflow-hidden HERE
+          className="w-1/2 max-h-[90vh] flex items-center justify-center bg-black relative select-none overflow-hidden"
           onTouchStart={onTouchStart}
           onTouchMove={onTouchMove}
           onTouchEnd={onTouchEnd}
@@ -168,16 +168,16 @@ const PostModal = ({ post, onClose }: { post: Post; onClose: () => void }) => {
           <div
             className="flex h-full w-full transition-transform duration-300 ease-out"
             style={{
-              width: `${imageCount * 100}%`, // Set total width of the track
+              width: `${imageCount * 100}%`,
               transform: `translateX(-${
                 currentImageIndex * (200 / imageCount)
-              }%)`, // Calculate transform based on the track width
+              }%)`,
             }}
           >
             {post.media.map((mediaItem, index) => (
               <div
                 key={index}
-                className="min-w-[100%] h-full flex items-center justify-center" // Each slide takes min-w-full of the track (which is 1/N of total width)
+                className="min-w-[100%] h-full flex items-center justify-center"
               >
                 <img
                   onDoubleClick={handleDoubleTap}
@@ -238,9 +238,7 @@ const PostModal = ({ post, onClose }: { post: Post; onClose: () => void }) => {
           )}
         </div>
 
-        {/* Details Area (Right side - w-1/2) */}
         <div className="w-1/2 p-6 flex flex-col">
-          {/* ... (Details content remains the same) ... */}
           {/* Header */}
           <div className="flex items-center gap-3 border-b pb-4 mb-4">
             <img
@@ -253,7 +251,6 @@ const PostModal = ({ post, onClose }: { post: Post; onClose: () => void }) => {
             </span>
           </div>
 
-          {/* Content & Comments */}
           <div
             style={{ color: colors.text }}
             className="flex-grow overflow-y-auto space-y-4"
@@ -264,9 +261,7 @@ const PostModal = ({ post, onClose }: { post: Post; onClose: () => void }) => {
             </p>
           </div>
 
-          {/* Footer (Actions) */}
           <div className="pt-4 border-t mt-4 space-y-2">
-            {/* Like/Comment Buttons */}
             <div className="flex gap-4 items-center">
               <Heart
                 style={{ color: colors.text }}
@@ -283,7 +278,6 @@ const PostModal = ({ post, onClose }: { post: Post; onClose: () => void }) => {
               />
             </div>
 
-            {/* Like Count */}
             <span className="font-bold text-md text-gray-500 block">
               {likeCountState} {likeCountState === 1 ? "like" : "likes"}
             </span>
@@ -300,7 +294,6 @@ const PostModal = ({ post, onClose }: { post: Post; onClose: () => void }) => {
   );
 };
 
-// --- AllPosts Main Component (remains the same) ---
 const AllPosts = ({ userId }: { userId: string }) => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
@@ -329,7 +322,6 @@ const AllPosts = ({ userId }: { userId: string }) => {
 
   return (
     <div className="w-full">
-      {/* --- Post Grid --- */}
       <div className="grid grid-cols-3 gap-1 md:gap-4 p-4">
         {posts.length === 0 ? (
           <p className="col-span-3 text-center text-gray-500 mt-10">
@@ -350,7 +342,6 @@ const AllPosts = ({ userId }: { userId: string }) => {
                 />
               )}
 
-              {/* Overlay for Stats (Insta-like hover) */}
               <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-200">
                 <div className="flex gap-4 text-white font-bold">
                   <div className="flex items-center gap-1">
@@ -368,7 +359,6 @@ const AllPosts = ({ userId }: { userId: string }) => {
         )}
       </div>
 
-      {/* --- Modal Rendering --- */}
       {selectedPost && <PostModal post={selectedPost} onClose={closeModal} />}
     </div>
   );

@@ -9,7 +9,8 @@ import {
 } from "lucide-react";
 import axiosInstance from "../../config/axiosInstance";
 import toast from "react-hot-toast";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import CommentModal from "../CommentModal";
 
 type postType = {
   profilePic: string;
@@ -45,16 +46,35 @@ const PostCard = ({
   const [likeCountState, setLikeCountState] = useState(likesCount);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  // --- NEW: State for the heart pop-up animation ---
   const [showHeartOverlay, setShowHeartOverlay] = useState(false);
 
-  // --- SWIPE LOGIC STATE ---
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const minSwipeDistance = 50;
 
+  const [commentModalOpen, setCommentModalOpen] = useState(false);
+
+  if (commentModalOpen) {
+    console.log("Comment is clicked");
+  }
+
+  const handleCommentCLick = () => {
+    setCommentModalOpen(true);
+  };
+
+  useEffect(() => {
+    if (commentModalOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [commentModalOpen]);
+
   const handleLike = async () => {
-    // If not liked yet, add 1. If liked, remove 1.
     const newLikedState = !hasLiked;
     setHasLiked(newLikedState);
     setLikeCountState(newLikedState ? likeCountState + 1 : likeCountState - 1);
@@ -65,22 +85,18 @@ const PostCard = ({
     } catch (error) {
       console.log(error);
       toast.error("Failed to like post");
-      // Revert state on error if needed
     }
   };
 
-  // --- NEW: Handle Double Click (Insta Style) ---
   const handleDoubleTap = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Stop event bubbling so it doesn't trigger other clicks
+    e.stopPropagation();
 
     setShowHeartOverlay(true);
 
-    // Hide the heart after 800ms
     setTimeout(() => {
       setShowHeartOverlay(false);
     }, 800);
 
-    // Only trigger the API call if it is NOT already liked
     if (!hasLiked) {
       handleLike();
     }
@@ -157,7 +173,6 @@ const PostCard = ({
       <div className="content mt-4">
         <p className="px-5 leading-5">{description}</p>
 
-        {/* CAROUSEL CONTAINER */}
         <div
           className="image w-full mt-2 relative overflow-hidden rounded-xl group select-none"
           onTouchStart={onTouchStart}
@@ -170,7 +185,6 @@ const PostCard = ({
           onMouseUp={onTouchEnd}
           style={{ cursor: image.length > 1 ? "grab" : "default" }}
         >
-          {/* ---  Floating Heart Overlay --- */}
           <div
             className={`absolute inset-0 z-20 flex items-center justify-center pointer-events-none transition-opacity duration-300 ${
               showHeartOverlay ? "opacity-100 scale-100" : "opacity-0 scale-50"
@@ -205,7 +219,6 @@ const PostCard = ({
             ))}
           </div>
 
-          {/* Navigation UI (Arrows/Dots) */}
           {image.length > 1 && (
             <>
               <button
@@ -268,10 +281,23 @@ const PostCard = ({
           <MessageSquare
             size={34}
             className="cursor-pointer hover:text-blue-600"
+            onClick={() => handleCommentCLick()}
           />
           <span className="font-semibold text-xl">{commentsCount}</span>
         </div>
       </div>
+      {commentModalOpen && (
+        <CommentModal
+          id={id}
+          profilePic={profilePic}
+          name={name}
+          time={time}
+          description={description}
+          image={image}
+          onClose={() => setCommentModalOpen(false)}
+          userId={userId}
+        />
+      )}
     </div>
   );
 };
