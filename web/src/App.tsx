@@ -114,7 +114,7 @@ const App = () => {
               </Route>
 
               {/* route for 404 */}
-              <Route path="*" element={<Navigate to="/" />} />
+              <Route path="/*" element={<Navigate to="/" />} />
             </Routes>
           </>
         )}

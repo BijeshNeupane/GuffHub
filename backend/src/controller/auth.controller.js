@@ -2,6 +2,7 @@ import { prisma } from "../config/prismaClient.js";
 
 import imagekit from "../lib/imagekit.js";
 import upload from "../lib/multer.js";
+import sharp from "sharp";
 
 export async function checkUserExistence(req, res) {
   const { clerkId } = req.body;
