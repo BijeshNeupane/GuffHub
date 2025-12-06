@@ -173,3 +173,26 @@ export async function getPostsById(req, res) {
     res.status(500).json({ error: "Failed to retrieve posts" });
   }
 }
+
+export async function commentPost(req, res) {
+  const { id } = req.params;
+
+  try {
+    const { content, userId } = req.body;
+    const comment = await prisma.comment.create({
+      data: {
+        text: content,
+        userId: userId,
+        postId: id,
+      },
+    });
+
+    if (!comment) {
+      return res.status(500).json({ error: "Failed to comment post" });
+    }
+    res.status(200).json(comment);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to comment post" });
+  }
+}

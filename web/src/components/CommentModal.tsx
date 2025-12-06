@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useAppSelector } from "../redux/hooks";
 import { useState } from "react";
 import { X } from "lucide-react";
+import axiosInstance from "../config/axiosInstance";
 
 type CommentModalProps = {
   id: string;
@@ -12,6 +13,7 @@ type CommentModalProps = {
   description: string;
   image: string[];
   userId: string;
+  setCommentCountState: React.Dispatch<React.SetStateAction<number>>;
 };
 
 const CommentModal = ({
@@ -23,6 +25,7 @@ const CommentModal = ({
   description,
   image,
   userId,
+  setCommentCountState,
 }: CommentModalProps) => {
   const { colors } = useAppSelector((state) => state.theme);
 
@@ -34,6 +37,21 @@ const CommentModal = ({
 
     if (value.length <= 100) {
       setComment(value);
+    }
+  };
+
+  const handleCommentSubmit = async () => {
+    try {
+      const { data } = await axiosInstance.post(`/post/comment/${id}`, {
+        content: comment,
+        userId,
+      });
+      if (data.error) throw new Error(data.error);
+      setComment("");
+      onClose();
+      setCommentCountState((prev) => prev + 1);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -93,7 +111,10 @@ const CommentModal = ({
             onChange={(e) => handleCommentType(e)}
           />
 
-          <button className="w-full px-4 py-2 rounded-xl mt-2 bg-blue-500 hover:bg-blue-600 active:scale-95 transition-all duration-300 text-white text-xl">
+          <button
+            onClick={() => handleCommentSubmit()}
+            className="w-full px-4 py-2 rounded-xl mt-2 bg-blue-500 hover:bg-blue-600 active:scale-95 transition-all duration-300 text-white text-xl"
+          >
             Comment
           </button>
         </div>

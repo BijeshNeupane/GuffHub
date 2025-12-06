@@ -44,6 +44,7 @@ const PostCard = ({
 
   const [hasLiked, setHasLiked] = useState(liked);
   const [likeCountState, setLikeCountState] = useState(likesCount);
+  const [commentCountState, setCommentCountState] = useState(commentsCount);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const [showHeartOverlay, setShowHeartOverlay] = useState(false);
@@ -283,7 +284,7 @@ const PostCard = ({
             className="cursor-pointer hover:text-blue-600"
             onClick={() => handleCommentCLick()}
           />
-          <span className="font-semibold text-xl">{commentsCount}</span>
+          <span className="font-semibold text-xl">{commentCountState}</span>
         </div>
       </div>
       {commentModalOpen && (
@@ -296,6 +297,7 @@ const PostCard = ({
           image={image}
           onClose={() => setCommentModalOpen(false)}
           userId={userId}
+          setCommentCountState={setCommentCountState}
         />
       )}
     </div>

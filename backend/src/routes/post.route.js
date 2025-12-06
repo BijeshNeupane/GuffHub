@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  commentPost,
   createPost,
   getPosts,
   getPostsById,
@@ -16,5 +17,6 @@ router.get("/", getPosts);
 router.get("/:id", getPostsById);
 router.post("/create", upload.any(), createPost);
 router.post("/like", likePost);
+router.post("/comment/:id", commentPost);
 
 export default router;
