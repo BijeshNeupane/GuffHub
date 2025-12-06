@@ -5,9 +5,12 @@ import authRoutes from "./routes/auth.route.js";
 import postRoutes from "./routes/post.route.js";
 import userRoutes from "./routes/user.route.js";
 import cors from "cors";
+import job from "./config/cron.js";
 
-const app = express();
 config();
+const app = express();
+
+if (process.env.NODE_ENV === "production") job.start();
 
 const PORT = process.env.PORT || 3000;
 
