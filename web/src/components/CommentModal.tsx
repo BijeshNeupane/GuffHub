@@ -27,6 +27,7 @@ const CommentModal = ({
   const { colors } = useAppSelector((state) => state.theme);
 
   const [comment, setComment] = useState("");
+  console.log(id);
 
   const handleCommentType = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;

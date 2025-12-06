@@ -17,7 +17,7 @@ interface Media {
 }
 
 interface Post {
-  id: string;
+  id: string | null;
   author: {
     username: string;
     profileImageUrl: string;
@@ -294,7 +294,7 @@ const PostModal = ({ post, onClose }: { post: Post; onClose: () => void }) => {
   );
 };
 
-const AllPosts = ({ userId }: { userId: string }) => {
+const AllPosts = ({ userId }: { userId: string | null }) => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
 
