@@ -21,7 +21,7 @@ const Navbar = () => {
       style={{ backgroundColor: colors.primary }}
       className="sticky top-0 z-20"
     >
-      <div className="container grid grid-cols-5 items-center">
+      <div className="container grid grid-cols-2 sm:grid-cols-5 items-center">
         {/* Logo */}
         <div className="col-span-1">
           <Link to="/">
@@ -34,7 +34,7 @@ const Navbar = () => {
         </div>
 
         {/* Navigation */}
-        <div className="col-span-3 flex items-center justify-evenly px-40 gap-4">
+        <div className="col-span-3 hidden sm:flex items-center justify-evenly px-40 gap-4">
           <Link to="/chat">
             <MessageCircle
               size={40}
