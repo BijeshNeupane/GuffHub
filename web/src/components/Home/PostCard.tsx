@@ -144,7 +144,7 @@ const PostCard = ({
       style={{ backgroundColor: colors.primary, color: colors.text }}
       className="card w-full px-6 py-4 rounded-2xl"
     >
-      <div className="top flex items-center justify-between px-5">
+      <div className="top flex items-center justify-between sm:px-5 px-2">
         <div className="left flex items-center gap-2">
           <div className="profile rounded-full overflow-hidden">
             <Link to={`/user/${userId}`}>
@@ -267,7 +267,7 @@ const PostCard = ({
         </div>
       </div>
 
-      <div className="likes flex gap-40 items-center mt-4 px-5">
+      <div className="likes flex md:gap-40 gap-4 items-center mt-4 sm:px-5 px-1">
         <div className="likes flex items-center gap-2">
           <Heart
             size={34}

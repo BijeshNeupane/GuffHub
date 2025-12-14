@@ -196,3 +196,26 @@ export async function commentPost(req, res) {
     res.status(500).json({ error: "Failed to comment post" });
   }
 }
+
+export async function getAllComment(req, res) {
+  const { id } = req.params;
+  try {
+    const comments = await prisma.comment.findMany({
+      where: {
+        postId: id,
+      },
+      include: {
+        user: {
+          select: {
+            username: true,
+            profileImageUrl: true,
+          },
+        },
+      },
+    });
+    res.status(200).json(comments);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to get comments" });
+  }
+}

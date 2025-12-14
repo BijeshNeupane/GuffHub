@@ -29,6 +29,8 @@ const CommentModal = ({
 }: CommentModalProps) => {
   const { colors } = useAppSelector((state) => state.theme);
 
+  const { id: selfId } = useAppSelector((state) => state.auth);
+
   const [comment, setComment] = useState("");
   console.log(id);
 
@@ -44,7 +46,7 @@ const CommentModal = ({
     try {
       const { data } = await axiosInstance.post(`/post/comment/${id}`, {
         content: comment,
-        userId,
+        userId: selfId,
       });
       if (data.error) throw new Error(data.error);
       setComment("");
