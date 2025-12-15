@@ -1,30 +1,33 @@
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import { useAppSelector } from "../redux/hooks";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import axiosInstance from "../config/axiosInstance";
+import toast from "react-hot-toast";
+import Comment from "./Comment";
+import timeHelper from "../helper/timeHelper";
 
 type CommentModalProps = {
   id: string;
   onClose: () => void;
-  profilePic: string;
-  name: string;
+  // profilePic: string;
+  // name: string;
   time: string;
   description: string;
   image: string[];
-  userId: string;
+  // userId: string;
   setCommentCountState: React.Dispatch<React.SetStateAction<number>>;
 };
 
 const CommentModal = ({
   id,
   onClose,
-  profilePic,
-  name,
+  // profilePic,
+  // name,
   time,
   description,
   image,
-  userId,
+  // userId,
   setCommentCountState,
 }: CommentModalProps) => {
   const { colors } = useAppSelector((state) => state.theme);
@@ -32,7 +35,9 @@ const CommentModal = ({
   const { id: selfId } = useAppSelector((state) => state.auth);
 
   const [comment, setComment] = useState("");
-  console.log(id);
+
+  const [allComments, setAllComments] = useState([]);
+  const [commentsLoading, setCommentsLoading] = useState(true);
 
   const handleCommentType = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
@@ -57,23 +62,41 @@ const CommentModal = ({
     }
   };
 
+  useEffect(() => {
+    const fetchAllCommentsForPost = async () => {
+      setCommentsLoading(true);
+      try {
+        const { data } = await axiosInstance.get(`/post/getAllComment/${id}`);
+        setAllComments(data);
+      } catch (error) {
+        console.error("Failed to fetch comments:", error);
+        toast.error("Failed to fetch comments");
+      } finally {
+        setCommentsLoading(false);
+      }
+    };
+    console.log("comments for post ", id, "is", allComments);
+
+    fetchAllCommentsForPost();
+  }, []);
+
   return (
     <div
       onClick={onClose}
       className="z-30 fixed inset-0 bg-black/45 flex justify-center items-center p-4 h-full "
     >
       <div
-        className="cross bg-gray-800 p-2 rounded-full text-white absolute top-8 right-60 cursor-pointer hover:scale-110 transition-all duration-300 active:scale-95"
+        className="cross bg-gray-800 p-2 rounded-full text-white absolute top-8 right-0 md:right-20 lg:right-60 cursor-pointer hover:scale-110 transition-all duration-300 active:scale-95 "
         onClick={() => onClose()}
       >
         <X />
       </div>
       <div
-        style={{ backgroundColor: colors.background }}
+        style={{ backgroundColor: colors.primary }}
         onClick={(e) => e.stopPropagation()}
         className="rounded-xl p-4 w-full max-w-md "
       >
-        <div className="profile flex items-center">
+        {/* <div className="profile flex items-center">
           <Link to={`/user/${userId}`}>
             <div className="imgDiv w-12 h-12 rounded-full cursor-pointer overflow-hidden">
               <img
@@ -87,7 +110,7 @@ const CommentModal = ({
             <h2 className="text-[16px]">{name}</h2>
             <p className="text-sm text-gray-500">{time}</p>
           </div>
-        </div>
+        </div> */}
         <div className="content mt-4 flex items-center gap-4">
           <div className="h-auto w-16 rounded-xl overflow-hidden">
             <img
@@ -96,9 +119,35 @@ const CommentModal = ({
               className="h-full w-full object-cover"
             />
           </div>
-          <div className="description w-1/2 text-nowrap overflow-hidden text-ellipsis">
-            {description}
+          <div className="w-2/3">
+            <div className="description  text-nowrap overflow-hidden text-ellipsis">
+              {description}
+            </div>
+            <div className="description  text-nowrap overflow-hidden text-ellipsis">
+              {time}
+            </div>
           </div>
+        </div>
+
+        <div className="comments h-[40vh] pt-5">
+          {commentsLoading ? (
+            <p className="h-full w-full flex items-center justify-center">
+              Loading comments...
+            </p>
+          ) : (
+            allComments.map((comment: any, index: number) => (
+              <>
+                <Comment
+                  key={index}
+                  profilePic={comment.user.profileImageUrl}
+                  time={timeHelper(comment.createdAt)}
+                  text={comment.text}
+                  userId={comment.userId}
+                  username={comment.user.username}
+                />
+              </>
+            ))
+          )}
         </div>
 
         <div className="comment mt-6">
@@ -107,7 +156,7 @@ const CommentModal = ({
           </p>
           <textarea
             style={{ backgroundColor: colors.primary }}
-            className="w-full h-28 rounded-xl resize-none border-none outline-none px-4 py-2"
+            className="w-full h-10 rounded-xl resize-none border-none outline-none px-4 py-2"
             placeholder="Enter Your Comment"
             value={comment}
             onChange={(e) => handleCommentType(e)}

@@ -103,8 +103,6 @@ const PostModal = ({ post, onClose }: { post: Post; onClose: () => void }) => {
     if (isRightSwipe) prevImage();
   };
 
-  console.log(allComments);
-
   useEffect(() => {
     const fetchAllCommentsForPost = async () => {
       setCommentsLoading(true);
@@ -311,7 +309,7 @@ const PostModal = ({ post, onClose }: { post: Post; onClose: () => void }) => {
                 allComments.map((comment: any) => (
                   <Comment
                     key={comment.id}
-                    id={comment.id}
+                    // id={comment.id}
                     profilePic={comment.user.profileImageUrl}
                     time={timeHelper(comment.createdAt)}
                     text={comment.text}

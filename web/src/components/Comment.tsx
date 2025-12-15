@@ -2,22 +2,20 @@ import { Link } from "react-router-dom";
 import { useAppSelector } from "../redux/hooks";
 
 const Comment = ({
-  id,
+  // id,
   profilePic,
   time,
   text,
   userId,
   username,
 }: {
-  id: string;
+  // id: string;
   profilePic: string;
   time: string;
   text: string;
   userId: string;
   username: string;
 }) => {
-  console.log(id, profilePic, time, text, userId);
-
   const { colors } = useAppSelector((state) => state.theme);
   return (
     <>
@@ -38,6 +36,7 @@ const Comment = ({
           <p className="name font-bold hover:underline">
             <Link to={`/user/${userId}`}>{username}</Link>
           </p>
+          <span className="text-gray-500">{time}</span>
         </div>
 
         <div className="comment mt-2">{text}</div>

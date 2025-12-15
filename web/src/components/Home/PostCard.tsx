@@ -55,10 +55,6 @@ const PostCard = ({
 
   const [commentModalOpen, setCommentModalOpen] = useState(false);
 
-  if (commentModalOpen) {
-    console.log("Comment is clicked");
-  }
-
   const handleCommentCLick = () => {
     setCommentModalOpen(true);
   };
@@ -290,13 +286,13 @@ const PostCard = ({
       {commentModalOpen && (
         <CommentModal
           id={id}
-          profilePic={profilePic}
-          name={name}
+          // profilePic={profilePic}
+          // name={name}
           time={time}
           description={description}
           image={image}
           onClose={() => setCommentModalOpen(false)}
-          userId={userId}
+          // userId={userId}
           setCommentCountState={setCommentCountState}
         />
       )}
