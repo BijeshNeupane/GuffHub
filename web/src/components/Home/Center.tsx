@@ -80,7 +80,7 @@ const Center = () => {
   }
 
   return (
-    <div className="sm:px-10 px-2 flex flex-col gap-10">
+    <div className="md:px-10 px-2 flex flex-col gap-10">
       {posts.map((post: any) => {
         return (
           <PostCard

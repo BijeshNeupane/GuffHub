@@ -19,14 +19,14 @@ const Navbar = () => {
   return (
     <div
       style={{ backgroundColor: colors.primary }}
-      className="sticky top-0 z-20"
+      className="sticky top-0 z-20 py-2"
     >
-      <div className="container grid grid-cols-2 sm:grid-cols-5 items-center">
+      <div className="container grid grid-cols-2 md:grid-cols-5 items-center">
         {/* Logo */}
-        <div className="col-span-1">
+        <div className="col-span-1 py-2">
           <Link to="/">
             <img
-              className="h-16 w-[200px]"
+              className="sm:w-full w-[150px]"
               src="./logo.svg"
               alt="GuffHub logo"
             />
@@ -34,7 +34,7 @@ const Navbar = () => {
         </div>
 
         {/* Navigation */}
-        <div className="col-span-3 hidden sm:flex items-center justify-evenly px-40 gap-4">
+        <div className="col-span-3 hidden md:flex items-center justify-evenly px-40 gap-4">
           <Link to="/chat">
             <MessageCircle
               size={40}
@@ -64,7 +64,7 @@ const Navbar = () => {
         </div>
 
         {/* User */}
-        <div className="col-span-1 flex justify-end gap-4">
+        <div className="col-span-1 flex items-center justify-end gap-4">
           {/* <UserButton
             appearance={{
               elements: {
@@ -73,7 +73,7 @@ const Navbar = () => {
             }} 
           />*/}
 
-          <div className="img-container w-10 h-10 rounded-full cursor-pointer overflow-hidden">
+          <div className="img-container sm:w-10 md:h-10 w-8 h-8 rounded-full cursor-pointer overflow-hidden">
             <Link to="/profile">
               <img
                 className="hover:scale-105 transition-all duration-300 object-cover w-full h-full"
@@ -89,9 +89,9 @@ const Navbar = () => {
             }}
           >
             {mode === "dark" ? (
-              <Sun size={40} className="cursor-pointer text-gray-600" />
+              <Sun className="sm:w-10 sm:h-10 w-8 h-8 cursor-pointer text-gray-600" />
             ) : (
-              <Moon size={40} className="cursor-pointer text-gray-600" />
+              <Moon className="sm:w-10 sm:h-10 w-8 h-8 cursor-pointer text-gray-600" />
             )}
           </div>
         </div>

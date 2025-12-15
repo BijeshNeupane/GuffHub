@@ -138,14 +138,14 @@ const PostCard = ({
   return (
     <div
       style={{ backgroundColor: colors.primary, color: colors.text }}
-      className="card w-full px-6 py-4 rounded-2xl"
+      className="card w-full md:px-6 sm:px-4 px-2 py-4 rounded-2xl"
     >
       <div className="top flex items-center justify-between sm:px-5 px-2">
         <div className="left flex items-center gap-2">
           <div className="profile rounded-full overflow-hidden">
             <Link to={`/user/${userId}`}>
               <img
-                className="w-12 h-12 object-cover cursor-pointer hover:scale-110 transition-all duration-300"
+                className="md:w-12 md:h-12 w-8 h-8 object-cover cursor-pointer hover:scale-110 transition-all duration-300"
                 src={profilePic}
                 alt="Profile"
               />
@@ -153,9 +153,9 @@ const PostCard = ({
           </div>
           <div className="name">
             <Link className="hover:underline" to={`/user/${userId}`}>
-              <h1 className="font-bold text-[22px]">{name}</h1>
+              <h1 className="font-bold md:text-[22px] text-[16px]">{name}</h1>
             </Link>
-            <p className="text-[12px]">{time}</p>
+            <p className="md:text-[12px] text-[10px]">{time}</p>
           </div>
         </div>
         <div className="right">
@@ -168,7 +168,9 @@ const PostCard = ({
       </div>
 
       <div className="content mt-4">
-        <p className="px-5 leading-5">{description}</p>
+        <p className="md:px-5 px-1 leading-5 text-[14px] md:text-[18px]">
+          {description}
+        </p>
 
         <div
           className="image w-full mt-2 relative overflow-hidden rounded-xl group select-none"
@@ -266,21 +268,23 @@ const PostCard = ({
       <div className="likes flex md:gap-40 gap-4 items-center mt-4 sm:px-5 px-1">
         <div className="likes flex items-center gap-2">
           <Heart
-            size={34}
             fill={hasLiked ? "red" : "none"}
             stroke={hasLiked ? "red" : colors.text}
-            className="cursor-pointer active:scale-90 transition-transform duration-200 hover:-translate-y-1"
+            className="md:w-8 md:h-8 w-6 h-6 cursor-pointer active:scale-90 transition-transform duration-200 hover:-translate-y-1"
             onClick={handleLike}
           />
-          <span className="font-semibold text-xl">{likeCountState}</span>
+          <span className="font-semibold sm:text-xl text-lg">
+            {likeCountState}
+          </span>
         </div>
         <div className="comments flex items-center gap-2">
           <MessageSquare
-            size={34}
-            className="cursor-pointer hover:text-blue-600"
+            className="md:w-8 md:h-8 w-6 h-6 cursor-pointer hover:text-blue-600"
             onClick={() => handleCommentCLick()}
           />
-          <span className="font-semibold text-xl">{commentCountState}</span>
+          <span className="font-semibold sm:text-xl text-lg">
+            {commentCountState}
+          </span>
         </div>
       </div>
       {commentModalOpen && (
