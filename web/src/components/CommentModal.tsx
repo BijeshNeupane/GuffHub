@@ -83,18 +83,18 @@ const CommentModal = ({
   return (
     <div
       onClick={onClose}
-      className="z-30 fixed inset-0 bg-black/45 flex justify-center items-center p-4 h-full "
+      className="z-30 fixed inset-0 bg-black/45 flex justify-center items-center sm:p-4 p-2 h-full "
     >
-      <div
+      {/* <div
         className="cross bg-gray-800 p-2 rounded-full text-white absolute top-8 right-0 md:right-20 lg:right-60 cursor-pointer hover:scale-110 transition-all duration-300 active:scale-95 "
         onClick={() => onClose()}
       >
         <X />
-      </div>
+      </div> */}
       <div
         style={{ backgroundColor: colors.primary }}
         onClick={(e) => e.stopPropagation()}
-        className="rounded-xl p-4 w-full max-w-md "
+        className="rounded-xl sm:p-4 p-2 w-full max-w-md "
       >
         {/* <div className="profile flex items-center">
           <Link to={`/user/${userId}`}>
@@ -112,26 +112,32 @@ const CommentModal = ({
           </div>
         </div> */}
         <div className="content mt-4 flex items-center gap-4">
-          <div className="h-auto w-16 rounded-xl overflow-hidden">
+          <div className="h-full w-16 rounded-xl overflow-hidden">
             <img
               src={image[0]}
               alt="post"
               className="h-full w-full object-cover"
             />
           </div>
-          <div className="w-2/3">
-            <div className="description  text-nowrap overflow-hidden text-ellipsis">
+          <div className="sm:w-2/3 w-3/5">
+            <div className="description sm:text-[1rem] text-[0.9rem] text-nowrap overflow-hidden text-ellipsis">
               {description}
             </div>
-            <div className="description  text-nowrap overflow-hidden text-ellipsis">
+            <div className="description  text-nowrap overflow-hidden text-ellipsis sm:text-[0.8rem] text-[0.7rem] text-gray-500">
               {time}
             </div>
+          </div>
+          <div
+            className="cross -mt-16 cursor-pointer hover:scale-110 p-1 rounded-full transition-all duration-200"
+            onClick={() => onClose()}
+          >
+            <X />
           </div>
         </div>
 
         <div className="comments h-[40vh] pt-5">
           {commentsLoading ? (
-            <p className="h-full w-full flex items-center justify-center">
+            <p className="h-full w-full flex items-center justify-center sm:text-[1rem] text-[0.8rem]">
               Loading comments...
             </p>
           ) : (
@@ -151,12 +157,12 @@ const CommentModal = ({
         </div>
 
         <div className="comment mt-6">
-          <p className="text-sm mb-2 pl-2 text-gray-500">
+          <p className="sm:text-[0.875rem] text-[0.7rem] mb-2 pl-2 text-gray-500">
             Length: {comment.length}, max: 100
           </p>
           <textarea
             style={{ backgroundColor: colors.primary }}
-            className="w-full h-10 rounded-xl resize-none border-none outline-none px-4 py-2"
+            className="w-full h-10 rounded-xl resize-none border-none outline-none sm:px-4 sm:py-2 px-2 py-1 sm:text-md text-sm"
             placeholder="Enter Your Comment"
             value={comment}
             onChange={(e) => handleCommentType(e)}
@@ -164,7 +170,7 @@ const CommentModal = ({
 
           <button
             onClick={() => handleCommentSubmit()}
-            className="w-full px-4 py-2 rounded-xl mt-2 bg-blue-500 hover:bg-blue-600 active:scale-95 transition-all duration-300 text-white text-xl"
+            className="w-full px-4 sm:py-2 py-1 rounded-xl mt-2 bg-blue-500 hover:bg-blue-600 active:scale-95 transition-all duration-300 text-white sm:text-xl text-md"
           >
             Comment
           </button>

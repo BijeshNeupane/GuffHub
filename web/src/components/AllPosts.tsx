@@ -53,7 +53,7 @@ const AllPosts = ({ userId }: { userId: string | null }) => {
 
   return (
     <div className="w-full">
-      <div className="grid grid-cols-3 gap-1 md:gap-4 p-4">
+      <div className="grid sm:grid-cols-3 grid-cols-2 gap-1 md:gap-4 sm:p-4 px-2 py-4">
         {posts.length === 0 ? (
           <p className="col-span-3 text-center text-gray-500 mt-10">
             No posts found for this user.
@@ -62,7 +62,7 @@ const AllPosts = ({ userId }: { userId: string | null }) => {
           posts.map((post) => (
             <div
               key={post.id}
-              className="aspect-square bg-gray-200 overflow-hidden cursor-pointer hover:opacity-80 transition duration-200 relative group"
+              className="aspect-square bg-gray-200 rounded-xl overflow-hidden cursor-pointer hover:opacity-80 transition duration-200 relative group "
               onClick={() => openModal(post)}
             >
               {post.media && post.media.length > 0 && (

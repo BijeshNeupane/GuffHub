@@ -84,8 +84,8 @@ export const UserPage = () => {
       style={{ backgroundColor: colors.background, color: colors.text }}
     >
       <div className="flex flex-col items-center">
-        <div className="info flex items-center gap-4">
-          <div className="image h-40 w-40 rounded-full overflow-hidden mt-5 cursor-pointer">
+        <div className="info flex items-center md:gap-4 sm:gap-3 gap-2">
+          <div className="image md:h-40 md:w-40 sm:h-32 sm:w-32 h-24 w-24 rounded-full overflow-hidden mt-5 cursor-pointer">
             <img
               src={`${profile.profileImageUrl}`}
               alt="Profile picture"
@@ -93,19 +93,21 @@ export const UserPage = () => {
             />
           </div>
           <div className="text">
-            <h2 className="text-3xl font-bold">{profile.username}</h2>
-            <h3 className="text-sm text-gray-500 mt-1">{profile.fullName}</h3>
+            <h2 className="md:text-3xl sm:text-2xl text-lg font-bold">
+              {profile.username}
+            </h2>
+            {/* <h3 className="text-sm text-gray-500 mt-1">{profile.fullName}</h3> */}
 
-            <div className="post flex items-center  gap-4 mt-2">
-              <p className="text-sm">
+            <div className="post flex items-center md:gap-4 sm:gap-3 gap-2 sm:mt-2">
+              <p className="sm:text-[0.875rem] text-[0.75rem]">
                 {profile?.posts?.length}{" "}
                 {profile?.posts?.length === 1 ? "Post" : "Posts"}
               </p>
-              <p className="text-sm">
+              <p className="sm:text-[0.875rem] text-[0.75rem]">
                 {profile?.followers?.length}{" "}
                 {profile?.followers?.length === 1 ? "follower" : "followers"}
               </p>
-              <p className="text-sm">
+              <p className="sm:text-[0.875rem] text-[0.75rem]">
                 {profile?.following?.length}{" "}
                 {profile?.following?.length === 1 ? "following" : "followings"}
               </p>

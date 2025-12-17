@@ -132,7 +132,7 @@ const PostModal = ({ post, onClose }: { post: Post; onClose: () => void }) => {
     >
       <div
         style={{ backgroundColor: colors.primary }}
-        className="relative flex w-full max-w-4xl max-h-[90vh] rounded-xl overflow-hidden shadow-2xl"
+        className="relative flex sm:flex-row flex-col w-full max-w-4xl h-[90vh] rounded-xl overflow-hidden shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}
@@ -144,7 +144,7 @@ const PostModal = ({ post, onClose }: { post: Post; onClose: () => void }) => {
         </button>
 
         <div
-          className="w-1/2 max-h-[90vh] flex items-center justify-center bg-black relative select-none overflow-hidden"
+          className="sm:w-1/2 sm:h-full w-full h-[50vh] flex items-center justify-center bg-black relative select-none overflow-hidden"
           onTouchStart={onTouchStart}
           onTouchMove={onTouchMove}
           onTouchEnd={onTouchEnd}
@@ -169,12 +169,10 @@ const PostModal = ({ post, onClose }: { post: Post; onClose: () => void }) => {
           </div>
 
           <div
-            className="flex h-full w-full transition-transform duration-300 ease-out"
+            className="flex h-full transition-transform duration-300 ease-out"
             style={{
               width: `${imageCount * 100}%`,
-              transform: `translateX(-${
-                currentImageIndex * (200 / imageCount)
-              }%)`,
+              transform: `translateX(-${currentImageIndex * 100}%)`,
             }}
           >
             {post.media.map((mediaItem, index) => (
@@ -220,7 +218,7 @@ const PostModal = ({ post, onClose }: { post: Post; onClose: () => void }) => {
                 className={`absolute top-1/2 right-2 -translate-y-1/2 p-2 z-10 rounded-full bg-black/50 text-white hover:bg-black/70 transition-opacity ${
                   currentImageIndex === imageCount - 1
                     ? "opacity-0 pointer-events-none"
-                    : "opacity-100"
+                    : "opacity-0"
                 }`}
               >
                 <ChevronRight size={24} />
@@ -241,9 +239,9 @@ const PostModal = ({ post, onClose }: { post: Post; onClose: () => void }) => {
           )}
         </div>
 
-        <div className="w-1/2 p-6 flex flex-col h-fit">
+        <div className="sm:w-1/2 sm:h-full w-full h-[50vh] p-6 flex flex-col overflow-auto">
           {/* Header */}
-          <div className="flex items-center gap-3 border-b pb-4 mb-4">
+          <div className="flex items-center gap-3 border-b pb-4 mb-4 flex-shrink-0">
             <img
               src={postProfilePic}
               alt={postAuthor}
@@ -256,15 +254,15 @@ const PostModal = ({ post, onClose }: { post: Post; onClose: () => void }) => {
 
           <div
             style={{ color: colors.text }}
-            className="overflow-y-auto space-y-4"
+            className="overflow-y-auto space-y-4 flex-shrink-0"
           >
-            <p className=" leading-relaxed">{post.content}</p>
+            <p className="leading-relaxed">{post.content}</p>
             <p className="text-sm text-gray-500 mt-2">
               Posted {timeHelper(post.createdAt)}
             </p>
           </div>
 
-          <div className="pt-4 border-t mt-4 space-y-2 ">
+          <div className="pt-4 border-t mt-4 space-y-2 flex-shrink-0">
             <div className="flex gap-4 items-center">
               <Heart
                 style={{ color: colors.text }}
@@ -284,19 +282,14 @@ const PostModal = ({ post, onClose }: { post: Post; onClose: () => void }) => {
             <span className="font-bold text-md text-gray-500 block">
               {likeCountState} {likeCountState === 1 ? "like" : "likes"}
             </span>
-
-            {/* <div className="flex items-center gap-1 text-gray-500">
-              <span className="font-semibold text-sm">
-                View {commentsCount} comments
-              </span>
-            </div> */}
           </div>
-          <div className="mt-4 pt-2 border-t">
-            <p className="text-gray-500 font-bold text-md">
+
+          <div className="mt-4 pt-2 border-t flex-1 flex flex-col min-h-0">
+            <p className="text-gray-500 font-bold text-md flex-shrink-0">
               {commentsCount} {commentsCount === 1 ? "comment" : "comments"}
             </p>
 
-            <div className="allComments pt-2">
+            <div className="allComments pt-2  flex-1">
               {commentsLoading ? (
                 <p className="h-28 flex items-center justify-center">
                   Loading comments ...
@@ -309,7 +302,6 @@ const PostModal = ({ post, onClose }: { post: Post; onClose: () => void }) => {
                 allComments.map((comment: any) => (
                   <Comment
                     key={comment.id}
-                    // id={comment.id}
                     profilePic={comment.user.profileImageUrl}
                     time={timeHelper(comment.createdAt)}
                     text={comment.text}
