@@ -5,6 +5,11 @@ import { ClerkProvider } from "@clerk/clerk-react";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { store } from "./redux/store.ts";
+import { registerSW } from "virtual:pwa-register";
+
+registerSW({
+  immediate: true,
+});
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
