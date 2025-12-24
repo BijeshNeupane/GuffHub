@@ -88,3 +88,37 @@ export async function getUserByUserName(req, res) {
     res.status(500).json({ error: "Failed to search users" });
   }
 }
+
+export async function savePostForUser(req, res) {
+  const { id: userId } = req.user;
+  const { postId } = req.params;
+
+  try {
+    const hasSaved = await prisma.postSave.findFirst({
+      where: {
+        postId,
+        userId,
+      },
+    });
+
+    if (hasSaved) {
+      return res.status(200).json({ message: "Post already saved" });
+    }
+
+    const post = await prisma.postSave.create({
+      data: {
+        postId,
+        userId,
+      },
+    });
+
+    if (!post) {
+      return res.status(500).json({ error: "Failed to save post" });
+    }
+
+    res.status(200).json({ message: "Post saved successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to save post" });
+  }
+}

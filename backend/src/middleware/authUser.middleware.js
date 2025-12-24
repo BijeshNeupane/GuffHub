@@ -16,7 +16,7 @@ export const verifyUser = async (req, res, next) => {
     });
 
     if (!user) {
-      return res.status(401).json({ message: "Unauthorized: User not found" });
+      return res.status(401).json({ message: "Unauthorized" });
     }
 
     // Attach user if needed later

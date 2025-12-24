@@ -6,6 +6,8 @@ import {
   MessageSquare,
   ChevronLeft,
   ChevronRight,
+  Bookmark,
+  Loader,
 } from "lucide-react";
 import axiosInstance from "../../config/axiosInstance";
 import toast from "react-hot-toast";
@@ -48,6 +50,8 @@ const PostCard = ({
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const [showHeartOverlay, setShowHeartOverlay] = useState(false);
+  const [postActionVisible, setPostActionVisible] = useState(false);
+  const [saveLoading, setSaveLoading] = useState(false);
 
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
@@ -80,7 +84,6 @@ const PostCard = ({
       await axiosInstance.post(`/post/like`, { postId: id, userId: selfId });
       toggleLike(id, selfId);
     } catch (error) {
-      console.log(error);
       toast.error("Failed to like post");
     }
   };
@@ -135,6 +138,20 @@ const PostCard = ({
     if (isRightSwipe) prevImage();
   };
 
+  const handleSave = async () => {
+    setSaveLoading(true);
+    try {
+      const { data } = await axiosInstance.post(`/user/post/save/${id}`);
+      if (data) {
+        toast.success(data.message);
+      }
+    } catch (error) {
+      toast.error("Failed to save post");
+    } finally {
+      setSaveLoading(false);
+    }
+  };
+
   return (
     <div
       style={{ backgroundColor: colors.primary, color: colors.text }}
@@ -158,12 +175,43 @@ const PostCard = ({
             <p className="md:text-[12px] text-[10px]">{time}</p>
           </div>
         </div>
-        <div className="right">
+        <div
+          className="right relative"
+          onMouseEnter={() => setPostActionVisible(true)}
+          onMouseLeave={() => setPostActionVisible(false)}
+        >
           <Ellipsis
             size={32}
             strokeWidth={3}
-            className="cursor-pointer hover:text-blue-600 transition-all duration-200"
+            className="cursor-pointer hover:text-blue-600 transition-all duration-200 active:scale-90"
           />
+
+          {postActionVisible && (
+            <div
+              style={{ backgroundColor: colors.background }}
+              className="postActions absolute sm:-left-16 -left-16 z-10 rounded-xl text-[14px] md:text-[18px] overflow-hidden"
+            >
+              <ul className="flex flex-col">
+                <li>
+                  <button
+                    className="flex items-center justify-center w-[100px] h-12 md:px-4 sm:px-3 px-2 sm:py-2 py-1 hover:bg-gray-500 gap-2"
+                    onClick={() => handleSave()}
+                  >
+                    {saveLoading ? (
+                      <>
+                        <Loader className="animate-spin" />
+                      </>
+                    ) : (
+                      <>
+                        <p>Save </p>
+                        <Bookmark className="md:w-5 md:h-5 h-4 w-4" />
+                      </>
+                    )}
+                  </button>
+                </li>
+              </ul>
+            </div>
+          )}
         </div>
       </div>
 

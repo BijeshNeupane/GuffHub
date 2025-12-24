@@ -3,6 +3,7 @@ import {
   followUser,
   getUserById,
   getUserByUserName,
+  savePostForUser,
   unFollowUser,
 } from "../controller/user.controller.js";
 import { verifyUser } from "../middleware/authUser.middleware.js";
@@ -14,5 +15,6 @@ router.get("/:id", getUserById);
 router.post("/follow", followUser);
 router.post("/unfollow", unFollowUser);
 router.get("/search/:username", getUserByUserName);
+router.post("/post/save/:postId", savePostForUser);
 
 export default router;

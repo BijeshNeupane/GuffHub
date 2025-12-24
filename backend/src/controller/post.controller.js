@@ -75,6 +75,9 @@ export async function getPosts(req, res) {
           select: { likes: true, comments: true, saves: true },
         },
       },
+      orderBy: {
+        createdAt: "desc",
+      },
     });
 
     res.status(200).json({ "posts": posts });
