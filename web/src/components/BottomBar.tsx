@@ -14,7 +14,7 @@ const BottomBar = () => {
         color: colors.text,
         boxShadow: `0 -1px 1px  ${colors.shadow}`,
       }}
-      className="sm:hidden fixed bottom-0 left-0 right-0 pt-3 grid grid-cols-4 gap-2 pb-5"
+      className="sm:hidden fixed bottom-0 left-0 right-0 pt-3 grid grid-cols-4 gap-2 pb-8"
     >
       <div
         className={`home flex items-center justify-center ${
