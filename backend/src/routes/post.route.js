@@ -5,6 +5,7 @@ import {
   getAllComment,
   getPosts,
   getPostsById,
+  getSavedPostsForUser,
   likePost,
 } from "../controller/post.controller.js";
 import upload from "../lib/multer.js";
@@ -16,6 +17,7 @@ router.use(verifyUser);
 
 router.get("/", getPosts);
 router.get("/:id", getPostsById);
+router.get("/saved/:id", getSavedPostsForUser);
 router.post("/create", upload.any(), createPost);
 router.post("/like", likePost);
 router.post("/comment/:id", commentPost);

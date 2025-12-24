@@ -15,6 +15,8 @@ import { setHasAccount, setUser } from "./redux/features/auth/authSlice";
 import Profile from "./pages/Profile";
 import RouteProgress from "./components/RouteProgress";
 import { UserPage } from "./pages/UserPage";
+import ProfileLayout from "./components/layouts/ProfileLayout";
+import ProfileSaved from "./pages/ProfileSaved";
 
 const App = () => {
   const navigate = useNavigate();
@@ -104,8 +106,11 @@ const App = () => {
                 <Route path="/chat" element={<Chat />} />
                 <Route path="/search" element={<Search />} />
                 <Route path="/create-post" element={<AddPost />} />
-                <Route path="/profile" element={<Profile />} />
                 <Route path="/user/:id" element={<UserPage />} />
+                <Route path="profile" element={<ProfileLayout />}>
+                  <Route path="" element={<Profile />} />
+                  <Route path="saved" element={<ProfileSaved />} />
+                </Route>
               </Route>
 
               {/* Layout without navbar */}

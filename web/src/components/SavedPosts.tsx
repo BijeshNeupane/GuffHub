@@ -25,7 +25,7 @@ export interface Post {
   };
 }
 
-const AllPosts = ({ userId }: { userId: string | null }) => {
+const SavedPosts = ({ userId }: { userId: string | null }) => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
   const [loading, setLoading] = useState(true);
@@ -42,8 +42,8 @@ const AllPosts = ({ userId }: { userId: string | null }) => {
     setLoading(true);
     const fetchPosts = async () => {
       try {
-        const { data } = await axiosInstance.get<{ posts: Post[] }>(
-          `/post/${userId}`
+        const { data } = await axiosInstance.get<{ posts: any }>(
+          `/post/saved/${userId}`
         );
         setPosts(data.posts);
       } catch (error) {
@@ -64,19 +64,19 @@ const AllPosts = ({ userId }: { userId: string | null }) => {
           </div>
         ) : posts.length === 0 ? (
           <p className="col-span-3 text-center text-gray-500 mt-10">
-            No posts found for this user.
+            No Saved posts found.
           </p>
         ) : (
-          posts.map((post) => (
+          posts.map((post: any) => (
             <div
-              key={post.id}
+              key={post.post.id}
               className="aspect-square bg-gray-200 rounded-xl overflow-hidden cursor-pointer hover:opacity-80 transition duration-200 relative group "
-              onClick={() => openModal(post)}
+              onClick={() => openModal(post.post)}
             >
-              {post.media && post.media.length > 0 && (
+              {post.post.media && post.post.media.length > 0 && (
                 <img
-                  src={post.media[0].imageUrl}
-                  alt={post.content.substring(0, 20)}
+                  src={post.post.media[0].imageUrl}
+                  alt={post.post.content.substring(0, 20)}
                   className="w-full h-full object-cover"
                 />
               )}
@@ -85,11 +85,11 @@ const AllPosts = ({ userId }: { userId: string | null }) => {
                 <div className="flex gap-4 text-white font-bold">
                   <div className="flex items-center gap-1">
                     <Heart size={20} fill="currentColor" />
-                    <span>{post._count.likes}</span>
+                    <span>{post.post._count.likes}</span>
                   </div>
                   <div className="flex items-center gap-1">
                     <MessageSquare size={20} />
-                    <span>{post._count.comments}</span>
+                    <span>{post.post._count.comments}</span>
                   </div>
                 </div>
               </div>
@@ -103,4 +103,4 @@ const AllPosts = ({ userId }: { userId: string | null }) => {
   );
 };
 
-export default AllPosts;
+export default SavedPosts;

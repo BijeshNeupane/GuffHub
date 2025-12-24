@@ -222,3 +222,45 @@ export async function getAllComment(req, res) {
     res.status(500).json({ error: "Failed to get comments" });
   }
 }
+
+export async function getSavedPostsForUser(req, res) {
+  const { id: userId } = req.params;
+
+  try {
+    const savedPosts = await prisma.postSave.findMany({
+      where: {
+        userId,
+      },
+      include: {
+        post: {
+          include: {
+            media: true,
+            author: {
+              select: {
+                username: true,
+                profileImageUrl: true,
+              },
+            },
+            likes: {
+              select: {
+                userId: true,
+              },
+            },
+            _count: {
+              select: { likes: true, comments: true, saves: true },
+            },
+          },
+        },
+      },
+    });
+
+    if (!savedPosts) {
+      return res.status(404).json({ error: "No saved posts found" });
+    }
+
+    res.status(200).json({ "posts": savedPosts });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to retrieve saved posts" });
+  }
+}
