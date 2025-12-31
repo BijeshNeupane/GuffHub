@@ -4,7 +4,7 @@ import Right from "../components/Home/Right";
 
 const Home = () => {
   return (
-    <div className="sm:container mx-auto grid grid-cols-5 pt-5 pb-5 ">
+    <div className="sm:container mx-auto grid grid-cols-5 pt-5 pb-24 ">
       <div className="left col-span-1 md:block hidden">
         <Left />
       </div>
